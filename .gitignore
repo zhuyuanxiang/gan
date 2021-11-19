@@ -1,3 +1,4 @@
 # 过滤插件生成的目录文件下的内容
 .history/
 tmp/
+datasets/
