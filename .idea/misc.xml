@@ -10,7 +10,7 @@
     <bower-package value="" />
     <bower.json value="" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote pytorch-pix2pix" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (pix2pix)" project-jdk-type="Python SDK" />
   <component name="PythonCompatibilityInspectionAdvertiser">
     <option name="version" value="3" />
   </component>
