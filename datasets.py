@@ -92,8 +92,9 @@ def generate_random(size):
     return random_data
 
 
+mnist_dataset = MnistDataset('datasets/mnist_train.csv')
+
 if __name__ == "__main__":
-    mnist_dataset = MnistDataset('datasets/mnist_train.csv')
     __author__ = 'zYx.Tom'
     main(__author__)
     plt.show()
