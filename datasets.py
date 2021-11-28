@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+import matplotlib.pyplot as plt
+
 """
 =================================================
 @path   : gan -> datasets.py
@@ -11,6 +13,7 @@
 @Desc   :
 ==================================================
 """
+import random
 from datetime import datetime
 
 import pandas
@@ -19,16 +22,17 @@ from matplotlib import pyplot as plt
 from torch.utils.data import Dataset
 
 
+def test_MnistDataset():
+    mnist_dataset.plot_image(17)
+    pass
+
+
 def main(name):
     print(f'Hi, {name}', datetime.now())
     # 测试 MNIST 的数据库
     test_mnist_data()
+    test_MnistDataset()
     pass
-
-
-if __name__ == "__main__":
-    __author__ = 'zYx.Tom'
-    main(__author__)
 
 
 class MnistDataset(Dataset):
@@ -41,14 +45,14 @@ class MnistDataset(Dataset):
     def __len__(self):
         return len(self.data_df)
 
-    def __getitem__(self, item):
+    def __getitem__(self, index):
         # 确定图像的标签
-        label = self.data_df.iloc[item, 0]
+        label = self.data_df.iloc[index, 0]
         target = torch.zeros(10)
         target[label] = 1.0
 
         # 归一化图像数据，从 0~255 到 0~1，从整数到浮点
-        image_values = torch.FloatTensor(self.data_df.iloc[item, 1:].values) / 255.0
+        image_values = torch.FloatTensor(self.data_df.iloc[index, 1:].values) / 255.0
 
         return label, image_values, target
 
@@ -69,4 +73,27 @@ def test_mnist_data():
     img = row_data[1:].values.reshape(28, 28)
     plt.title(("label={}".format(label)))
     plt.imshow(img, interpolation='none', cmap='Blues')
+    plt.show()
+
+
+def generate_real():
+    real_data = torch.FloatTensor([
+            random.uniform(0.8, 1.0),
+            random.uniform(0.0, 0.2),
+            random.uniform(0.8, 1.0),
+            random.uniform(0.0, 0.2)
+    ])
+    return real_data
+
+
+def generate_random(size):
+    """随机生成均匀分布的数据"""
+    random_data = torch.rand(size)
+    return random_data
+
+
+if __name__ == "__main__":
+    mnist_dataset = MnistDataset('datasets/mnist_train.csv')
+    __author__ = 'zYx.Tom'
+    main(__author__)
     plt.show()
