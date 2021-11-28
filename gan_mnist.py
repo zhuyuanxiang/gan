@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
-import torch
-import torch
 from abc import ABCMeta
 from abc import abstractmethod
 
 from torch.nn import Module
+from datasets import MnistDataset
 
 """
 =================================================
@@ -20,38 +19,10 @@ from torch.nn import Module
 """
 import torch
 import torch.nn as nn
-from torch.utils.data import Dataset
 import pandas
 import matplotlib.pyplot as plt
 from datetime import datetime
 from tools import func_time
-
-
-class MnistDataset(Dataset):
-    """数据集的管理"""
-
-    def __init__(self, csv_file):
-        self.data_df = pandas.read_csv(csv_file, header=None)
-        pass
-
-    def __len__(self):
-        return len(self.data_df)
-
-    def __getitem__(self, item):
-        # 确定图像的标签
-        label = self.data_df.iloc[item, 0]
-        target = torch.zeros(10)
-        target[label] = 1.0
-
-        # 归一化图像数据，从 0~255 到 0~1，从整数到浮点
-        image_values = torch.FloatTensor(self.data_df.iloc[item, 1:].values) / 255.0
-
-        return label, image_values, target
-
-    def plot_image(self, index):
-        img = self.data_df.iloc[index, 1:].values.reshape(28, 28)
-        plt.title("label= ".format(self.data_df.iloc[index, 0]))
-        plt.imshow(img, interpolation='none', cmap='Blues')
 
 
 class Classifier(Module, metaclass=ABCMeta):
