@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
-import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
-import torch
-import torch
+from datasets import generate_random
+from datasets import generate_real
 
 """
 =================================================
@@ -22,25 +20,9 @@ import torch.nn as nn
 
 import pandas
 import matplotlib.pyplot as plt
-import random
 import numpy
 from tools import func_time
 import pprint
-
-
-def generate_real():
-    real_data = torch.FloatTensor([
-            random.uniform(0.8, 1.0),
-            random.uniform(0.0, 0.2),
-            random.uniform(0.8, 1.0),
-            random.uniform(0.0, 0.2)
-    ])
-    return real_data
-
-
-def generate_random(size):
-    random_data = torch.rand(size)
-    return random_data
 
 
 class Discriminator(nn.Module):
@@ -124,8 +106,8 @@ class Generator(nn.Module):
 def main(name):
     print(f'Hi, {name}', datetime.now())
 
-    # test_discriminator()
-    # test_generator()
+    # test_discriminator(D)
+    # test_generator(G)
 
     train_GAN()
     pass
