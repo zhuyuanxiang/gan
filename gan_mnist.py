@@ -18,7 +18,6 @@ from linear_classifier import train_network
 ==================================================
 """
 import torch
-import pandas
 import matplotlib.pyplot as plt
 from datetime import datetime
 
@@ -26,7 +25,7 @@ from datetime import datetime
 def main(name):
     print(f'Hi, {name}', datetime.now())
     # 测试 MNIST 的数据库
-    # mnist_data()
+    # test_mnist_data()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     device = "cpu"
@@ -45,20 +44,6 @@ def main(name):
     train_network(C, mnist_dataset, device)
     test_network(C, mnist_test_dataset, device)
     pass
-
-
-def mnist_data():
-    df = pandas.read_csv("datasets/mnist_train.csv", header=None)
-    print(df.head())
-    print(df.info())
-    # 从 pandas 的 dataframe 中获取数据
-    row = 13
-    row_data = df.iloc[row]
-    label = row_data[0]
-    img = row_data[1:].values.reshape(28, 28)
-    plt.title(("label={}".format(label)))
-    plt.imshow(img, interpolation='none', cmap='Blues')
-    plt.show()
 
 
 if __name__ == "__main__":

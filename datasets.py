@@ -16,7 +16,6 @@ from datetime import datetime
 import pandas
 import torch
 from matplotlib import pyplot as plt
-from matplotlib import pyplot as plt
 from torch.utils.data import Dataset
 
 
@@ -55,3 +54,17 @@ class MnistDataset(Dataset):
         img = self.data_df.iloc[index, 1:].values.reshape(28, 28)
         plt.title("label= ".format(self.data_df.iloc[index, 0]))
         plt.imshow(img, interpolation='none', cmap='Blues')
+
+
+def test_mnist_data():
+    df = pandas.read_csv("datasets/mnist_train.csv", header=None)
+    print(df.head())
+    print(df.info())
+    # 从 pandas 的 dataframe 中获取数据
+    row = 13
+    row_data = df.iloc[row]
+    label = row_data[0]
+    img = row_data[1:].values.reshape(28, 28)
+    plt.title(("label={}".format(label)))
+    plt.imshow(img, interpolation='none', cmap='Blues')
+    plt.show()
