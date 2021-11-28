@@ -21,6 +21,8 @@ from torch.utils.data import Dataset
 
 def main(name):
     print(f'Hi, {name}', datetime.now())
+    # 测试 MNIST 的数据库
+    test_mnist_data()
     pass
 
 

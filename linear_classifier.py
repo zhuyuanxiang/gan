@@ -26,6 +26,23 @@ from tools import func_time
 
 def main(name):
     print(f'Hi, {name}', datetime.now())
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = "cpu"
+    mnist_dataset = MnistDataset('datasets/mnist_train.csv')
+    mnist_test_dataset = MnistDataset('datasets/mnist_test.csv')
+
+    # test_mnist_class(mnist_dataset)
+    # test_mnist_class(mnist_test_dataset)
+
+    # C = LinearClassifier()
+    # train_network(C, mnist_dataset, mnist_test_dataset)
+    # test_network(C, mnist_test_dataset)
+
+    # C = LeakyClassifier()
+    C = AdamLayerNormLinearClassifier().to(device)
+    train_network(C, mnist_dataset, device)
+    test_network(C, mnist_test_dataset, device)
     pass
 
 
