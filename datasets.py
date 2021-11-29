@@ -1,8 +1,3 @@
-# -*- encoding: utf-8 -*-
-import torch
-import torch
-import matplotlib.pyplot as plt
-
 """
 =================================================
 @path   : gan -> datasets.py
@@ -18,27 +13,36 @@ import matplotlib.pyplot as plt
 import random
 from datetime import datetime
 
+import h5py
+import numpy
 import pandas
 import torch
 from matplotlib import pyplot as plt
 from torch.utils.data import Dataset
 
 
-def test_MnistDataset():
-    mnist_dataset.plot_image(17)
-    pass
+class CelebADataset(Dataset):
+    """CelebA 数据集"""
 
+    def __init__(self, hdf5_file):
+        self.file_object = h5py.File(hdf5_file, 'r')
+        self.dataset = self.file_object['img_align_celeba']
 
-def main(name):
-    print(f'Hi, {name}', datetime.now())
-    # 测试 MNIST 的数据库
-    test_mnist_data()
-    test_MnistDataset()
-    pass
+    def __len__(self):
+        return len(self.dataset)
+
+    def __getitem__(self, item):
+        if item >= len(self.dataset):
+            raise IndexError()
+        img = numpy.array(self.dataset[str(item) + '.jpg'])
+        return torch.cuda.FloatTensor(img) / 255.0
+
+    def plot_image(self, index):
+        plt.imshow(numpy.array(self.dataset[str(index) + '.jpg']), interpolation='nearest')
 
 
 class MnistDataset(Dataset):
-    """数据集的管理"""
+    """MNIST 数据集"""
 
     def __init__(self, csv_file):
         self.data_df = pandas.read_csv(csv_file, header=None)
@@ -104,7 +108,36 @@ def generate_random_seed(size):
     return random_data
 
 
+def crop_center(img, new_width, new_height):
+    """输入给定的大小，基于中心剪裁"""
+    height, width, _ = img.shape
+    startx = width // 2 - new_width // 2
+    starty = height // 2 - new_height // 2
+    return img[starty:starty + new_height, startx:startx + new_width]
+
+
+def test_MnistDataset():
+    mnist_dataset.plot_image(17)
+    pass
+
+
+def test_CelebADataset():
+    celeba_dataset.plot_image(43)
+    pass
+
+
+def main(name):
+    print(f'Hi, {name}', datetime.now())
+    # 测试 MNIST 的数据库
+    # test_mnist_data()
+    # test_MnistDataset()
+    test_CelebADataset()
+    pass
+
+
 mnist_dataset = MnistDataset('datasets/mnist_train.csv')
+mnist_test_dataset = MnistDataset('datasets/mnist_test.csv')
+celeba_dataset = CelebADataset('datasets/celeba_aligned_small.h5py')
 
 if __name__ == "__main__":
     __author__ = 'zYx.Tom'
