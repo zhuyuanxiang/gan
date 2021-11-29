@@ -89,7 +89,7 @@ class Generator(nn.Module):
         d_output = D.forward(g_output)
         loss = D.loss_function(d_output, targets)
         self.counter += 1
-        if (self.counter % 10 == 0):
+        if self.counter % 10 == 0:
             self.progress.append(loss.item())
             pass
         self.optimiser.zero_grad()
@@ -98,7 +98,7 @@ class Generator(nn.Module):
         # print("after backward d_output=", D.forward(g_output))
         self.optimiser.step()
 
-    def plot_gress(self):
+    def plot_progress(self):
         df = pandas.DataFrame(self.progress, columns=['loss'])
         df.plot(ylim=(0, 1.0), figsize=(16, 8), alpha=0.1, marker='.', grid=True, yticks=(0, 0.25, 0.5))
 
@@ -125,7 +125,7 @@ def train_GAN():
         if i % 1000 == 0:
             image_list.append(G.forward(torch.FloatTensor([0.5])).detach().numpy())
     D.plot_progress()
-    G.plot_gress()
+    G.plot_progress()
     # print(G.forward(torch.FloatTensor([0.5])))
     plt.figure(figsize=(16, 8))
     plt.imshow(numpy.array(image_list).T, interpolation='none', cmap='Blues')
