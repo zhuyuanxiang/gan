@@ -35,10 +35,13 @@ class CelebADataset(Dataset):
         if item >= len(self.dataset):
             raise IndexError()
         img = numpy.array(self.dataset[str(item) + '.jpg'])
-        return torch.cuda.FloatTensor(img) / 255.0
+        img = crop_center(img, 128, 128)
+        return torch.cuda.FloatTensor(img).permute(2, 0, 1).view(1, 3, 128, 128) / 255.0
 
     def plot_image(self, index):
-        plt.imshow(numpy.array(self.dataset[str(index) + '.jpg']), interpolation='nearest')
+        img = numpy.array(self.dataset[str(index) + '.jpg'])
+        img = crop_center(img)
+        plt.imshow(img, interpolation='nearest')
 
 
 class MnistDataset(Dataset):
