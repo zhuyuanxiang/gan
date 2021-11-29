@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+import torch
+import torch
 import matplotlib.pyplot as plt
 
 """
@@ -89,6 +91,16 @@ def generate_real():
 def generate_random(size):
     """随机生成均匀分布的数据"""
     random_data = torch.rand(size)
+    return random_data
+
+
+def generate_random_image(size):
+    random_data = torch.rand(size)
+    return random_data
+
+
+def generate_random_seed(size):
+    random_data = torch.randn(size)
     return random_data
 
 
