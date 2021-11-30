@@ -1,0 +1,291 @@
+C:\Users\zhuyuanxiang\anaconda3\envs\pix2pix\python.exe C:/Users/zhuyuanxiang/Projects/GitHub/GAN/gan/gan_mnist.py
+Hi, zYx.Tom 2021-11-25 10:12:17.021441
+LinearClassifier
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+label= 4
+函数train_network()消耗时间为0:03:28.378188
+正确标记数据= 8808
+原始测试数据= 10000
+精确度= 0.8808
+函数test_network()消耗时间为0:00:04.109066
+
+LeakyClassifier
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+label= 4
+函数train_network()消耗时间为0:03:28.992928
+正确标记数据= 9287
+原始测试数据= 10000
+精确度= 0.9287
+函数test_network()消耗时间为0:00:04.506601
+
+BCELinearClassifier
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+label= 4
+函数train_network()消耗时间为0:05:49.282071
+正确标记数据= 9089
+原始测试数据= 10000
+精确度= 0.9089
+函数test_network()消耗时间为0:00:04.143981
+
+BCELeakyClassifier
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+label= 4
+函数train_network()消耗时间为0:03:15.015858
+正确标记数据= 9298
+原始测试数据= 10000
+精确度= 0.9298
+函数test_network()消耗时间为0:01:01.607135
+
+LayerNormLinearClassifier
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+label= 4
+函数train_network()消耗时间为0:03:31.268178
+正确标记数据= 9145
+原始测试数据= 10000
+精确度= 0.9145
+函数test_network()消耗时间为0:00:04.360065
+
+LayerNormLinearClassifier_CUDA：
+使用 CUDA 速度还变慢，因为 CPU 在计算中没有成为瓶颈，加入 GPU 后反而需要消耗数据移动的时间
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+函数train_network()消耗时间为0:04:38.950459
+label= 4
+正确标记数据= 9146
+原始测试数据= 10000
+精确度= 0.9146
+函数test_network()消耗时间为0:00:05.483210
+
+AdamLayerNormLinearClassifier
+准确率高，但是时间慢很多
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+函数train_network()消耗时间为0:09:10.883854
+label= 4
+正确标记数据= 9711
+原始测试数据= 10000
+精确度= 0.9711
+函数test_network()消耗时间为0:00:06.004157
+
+AdamLayerNormLinearClassifier：CPU 比 GPU 还快一点
+training epoch 1 of 4
+counter= 10000
+counter= 20000
+counter= 30000
+counter= 40000
+counter= 50000
+counter= 60000
+training epoch 2 of 4
+counter= 70000
+counter= 80000
+counter= 90000
+counter= 100000
+counter= 110000
+counter= 120000
+training epoch 3 of 4
+counter= 130000
+counter= 140000
+counter= 150000
+counter= 160000
+counter= 170000
+counter= 180000
+training epoch 4 of 4
+counter= 190000
+counter= 200000
+counter= 210000
+counter= 220000
+counter= 230000
+counter= 240000
+函数train_network()消耗时间为0:08:06.375963
+label= 4
+正确标记数据= 9686
+原始测试数据= 10000
+精确度= 0.9686
+函数test_network()消耗时间为0:00:04.448424
