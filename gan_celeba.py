@@ -54,7 +54,7 @@ class CelebAGenerator(Generator):
                 nn.LayerNorm(3 * 10 * 10),
                 nn.Linear(3 * 10 * 10, 3 * 128 * 128),
                 nn.Sigmoid(),
-                nn.Unflatten(0, (128, 128, 3))  # 从 0 维重组
+                nn.Unflatten(0, (3, 128, 128))  # 从 0 维重组
         )
         self.optimiser = torch.optim.Adam(self.parameters(), lr=0.0001)
 
@@ -67,11 +67,14 @@ def main(name):
     print(f'Hi, {name}', datetime.now())
     # test_celeba_discriminator()
     # test_celeba_generator()
+    test_GAN()
+    pass
+
+
+def test_GAN():
     D = CelebADiscriminator().to(device)
     G = CelebAGenerator().to(device)
-
     epochs = 4
-
     for epoch in range(epochs):
         print(f"--->第{epoch}次迭代<---")
         for image_data_tensor in celeba_dataset:
@@ -79,17 +82,14 @@ def main(name):
             generate_data_tensor = generate_random_seed(100)
             D.train(G.forward(generate_data_tensor).detach(), torch.cuda.FloatTensor([0.0]))
             G.train(D, generate_data_tensor, torch.cuda.FloatTensor([1.0]))
-
     D.plot_progress()
     G.plot_progress()
-
     f, axarr = plt.subplots(2, 3, figsize=(16, 8))
     for i in range(2):
         for j in range(3):
             output = G.forward(generate_random_seed(100))
-            img = output.detach().cpu().numpy()
+            img = output.detach().permute(1, 2, 0).cpu().numpy()
             axarr[i, j].imshow(img, interpolation='none', cmap='Blues')
-    pass
 
 
 def test_celeba_generator():
@@ -103,7 +103,7 @@ def test_celeba_discriminator():
     D = CelebADiscriminator().to(device)
     for image_data_tensor in celeba_dataset:
         D.train(image_data_tensor, torch.cuda.FloatTensor([1.0]))
-        D.train(generate_random_image((218, 178, 3)), torch.cuda.FloatTensor([0.0]))
+        D.train(generate_random_image((128, 128, 3)), torch.cuda.FloatTensor([0.0]))
     D.plot_progress()
     for i in range(4):
         image_data_tensor = celeba_dataset[random.randint(0, 20000)]
