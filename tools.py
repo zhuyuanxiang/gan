@@ -12,6 +12,8 @@
 """
 from datetime import datetime
 
+import torch
+
 
 def func_time(func):
     def wrapper(*args, **kw):
@@ -27,6 +29,17 @@ def func_time(func):
 def main(name):
     print(f'Hi, {name}', datetime.now())
     pass
+
+
+def get_device():
+    if torch.cuda.is_available():  # 检测gpu是否可用，不可用使用cpu
+        device = 'cuda'
+        torch.set_default_tensor_type(torch.cuda.FloatTensor)
+        print("using cuda:", torch.cuda.get_device_name(0))
+    else:
+        device = 'cpu'
+    print('Using {} device'.format(device))  # 输出使用设备类型
+    return device
 
 
 if __name__ == "__main__":
