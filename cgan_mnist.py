@@ -85,15 +85,13 @@ class cGANGenerator(nn.Module):
         self.counter += 1
         if self.counter % 10 == 0:
             self.progress.append(loss.item())
-        if self.counter % 10000 == 0:
-            print("counter = ", self.counter)
         self.optimiser.zero_grad()
         loss.backward()
         self.optimiser.step()
 
     def plot_progress(self):
         df = pandas.DataFrame(self.progress, columns=['loss'])
-        df.plot(ylim=0, figsize=(16, 8), alpha=0.1, marker='.', gird=True, yticks=(0, 0.25, 0.5, 1.0, 5.0))
+        df.plot(ylim=0, figsize=(16, 8), alpha=0.1, marker='.', grid=True, yticks=(0, 0.25, 0.5, 1.0, 5.0))
 
 
 def plot_images(label, G: cGANGenerator):
@@ -110,13 +108,16 @@ def main(name):
     print(f'Hi, {name}', datetime.now())
 
     # test_discriminator()
-    test_generator()
+    # test_generator()
 
+    test_GAN()
+    pass
+
+
+def test_GAN():
     D = cGANDiscriminator()
     G = cGANGenerator()
-
     epochs = 12
-
     for epoch in range(epochs):
         print(f"--->第{epoch}次迭代<---")
         for label, image_data_tensor, label_tensor in mnist_dataset:
@@ -125,16 +126,13 @@ def main(name):
             D.train(G.forward(generate_random_seed(100), random_label).detach(), random_label, torch.FloatTensor([0.0]))
             random_label = generate_random_one_hot(10)
             G.train(D, generate_random_seed(100), random_label, torch.FloatTensor([1.0]))
-
     D.plot_progress()
     G.plot_progress()
-
     plot_images(1, G)
     plot_images(3, G)
     plot_images(5, G)
     plot_images(7, G)
     plot_images(9, G)
-    pass
 
 
 def test_generator():
