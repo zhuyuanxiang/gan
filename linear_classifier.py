@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+from tools import get_device
+
 """
 =================================================
 @path   : gan -> linear_classifier.py
@@ -20,35 +22,23 @@ import torch
 from torch import nn as nn
 from torch.nn import Module
 
-from datasets import MnistDataset
+from datasets import mnist_dataset
+from datasets import mnist_test_dataset
 from tools import func_time
 
 
 def main(name):
     print(f'Hi, {name}', datetime.now())
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    device = "cpu"
-    mnist_dataset = MnistDataset('datasets/mnist_train.csv')
-    mnist_test_dataset = MnistDataset('datasets/mnist_test.csv')
-
     # test_mnist_class(mnist_dataset)
     # test_mnist_class(mnist_test_dataset)
 
     # C = LinearClassifier()
-    # train_network(C, mnist_dataset, mnist_test_dataset)
-    # test_network(C, mnist_test_dataset)
-
     # C = LeakyClassifier()
-    C = AdamLayerNormLinearClassifier().to(device)
-    train_network(C, mnist_dataset, device)
-    test_network(C, mnist_test_dataset, device)
+    C = AdamLayerNormLinearClassifier()
+    train_network(C, mnist_dataset)
+    test_network(C, mnist_test_dataset)
     pass
-
-
-if __name__ == "__main__":
-    __author__ = 'zYx.Tom'
-    main(__author__)
 
 
 class Classifier(Module, metaclass=ABCMeta):
@@ -56,14 +46,18 @@ class Classifier(Module, metaclass=ABCMeta):
 
     def __init__(self):
         super(Classifier, self).__init__()
-
-        self.model = self.create_network()
-
-        self.loss_function = nn.MSELoss()
-        self.optimiser = torch.optim.SGD(self.parameters(), lr=0.01)
+        self.model = self.create_network()  # 抽象函数，继承时需要实现
+        self.loss_function = self.create_loss_func()  # 默认为 MSELoss()
+        self.optimiser = self.create_optimiser()  # 默认为 SGD()
         self.counter = 0
         self.progress = []
         pass
+
+    def create_optimiser(self):
+        return torch.optim.SGD(self.parameters(), lr=0.01)
+
+    def create_loss_func(self):
+        return nn.MSELoss()
 
     @abstractmethod
     def create_network(self):
@@ -82,9 +76,13 @@ class Classifier(Module, metaclass=ABCMeta):
         if self.counter % 10000 == 0:
             print("counter=", self.counter)
             pass
-        self.optimiser.zero_grad()
-        loss.backward()
-        self.optimiser.step()
+
+        # 梯度归零，反向传播，更新权重
+        self.optimiser.zero_grad()  # 将计算图中的梯度全部归0，即参数初始化
+        loss.backward()  # 从损失函数中反向传播梯度
+        self.optimiser.step()  # 使用梯度更新网络参数
+        # 注1：在每次训练之前都需要将梯度归零，否则梯度会累加
+        # 注2：使用每次反向传播得到的梯度更新网络的参数
         pass
 
     def plot_progress(self):
@@ -94,6 +92,8 @@ class Classifier(Module, metaclass=ABCMeta):
 
 
 class LinearClassifier(Classifier):
+    """原始的线性分类器"""
+
     def create_network(self):
         return nn.Sequential(
                 nn.Linear(784, 200),
@@ -104,6 +104,7 @@ class LinearClassifier(Classifier):
 
 
 class LeakyClassifier(Classifier):
+    """使用 LeakyReLU() 损失函数"""
 
     def create_network(self):
         return nn.Sequential(
@@ -115,6 +116,8 @@ class LeakyClassifier(Classifier):
 
 
 class LayerNormLinearClassifier(Classifier):
+    """使用层归一化 LayerNorm()"""
+
     def create_network(self):
         return nn.Sequential(
                 nn.Linear(784, 200),
@@ -128,30 +131,37 @@ class LayerNormLinearClassifier(Classifier):
 class BCELinearClassifier(LinearClassifier):
     def __init__(self):
         super(BCELinearClassifier, self).__init__()
-        self.loss_function = nn.BCELoss()
+
+    def create_loss_func(self):
+        return nn.BCELoss()
 
 
 class BCELeakyClassifier(LeakyClassifier):
     def __init__(self):
         super(BCELeakyClassifier, self).__init__()
 
+    def create_loss_func(self):
+        return nn.BCELoss()
+
 
 class AdamLayerNormLinearClassifier(LayerNormLinearClassifier):
     def __init__(self):
         super(AdamLayerNormLinearClassifier, self).__init__()
-        self.optimiser = torch.optim.Adam(self.parameters())
+
+    def create_optimiser(self):
+        return torch.optim.Adam(self.parameters())
 
 
 @func_time
-def test_network(C, mnist_test_dataset, device):
+def test_network(C, test_dataset):
     record = 19
-    print("label=", mnist_test_dataset[record][0])
-    image_data = mnist_test_dataset[record][1]
+    print("label=", test_dataset[record][0])
+    image_data = test_dataset[record][1]
     output = C.forward(image_data.to(device))
     pandas.DataFrame(output.detach().cpu().numpy()).plot(kind='bar', legend=False, ylim=(0, 1))
 
     score, items = 0, 0
-    for label, image_data_tensor, target_tensor in mnist_test_dataset:
+    for label, image_data_tensor, target_tensor in test_dataset:
         answer = C.forward(image_data_tensor.to(device)).detach().cpu().numpy()
         if answer.argmax() == label:
             score += 1
@@ -162,18 +172,23 @@ def test_network(C, mnist_test_dataset, device):
 
 
 @func_time
-def train_network(C, mnist_dataset, device):
+def train_network(C, train_dataset):
     epochs = 4
     for i in range(epochs):
         print("training epoch", i + 1, "of", epochs)
-        for label, image_data_tensor, target_tensor in mnist_dataset:
+        for label, image_data_tensor, target_tensor in train_dataset:
             C.train(image_data_tensor.to(device), target_tensor.to(device))
             pass
         pass
     C.plot_progress()
 
 
-def test_mnist_class():
-    mnist_dataset = MnistDataset('datasets/mnist_train.csv')
-    print(mnist_dataset[100])
-    mnist_dataset.plot_image(9)
+def test_mnist_class(dataset):
+    print(dataset[100])
+    dataset.plot_image(9)
+
+
+if __name__ == "__main__":
+    __author__ = 'zYx.Tom'
+    main(__author__)
+    device = get_device()
