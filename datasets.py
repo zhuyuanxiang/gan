@@ -40,7 +40,7 @@ class CelebADataset(Dataset):
 
     def plot_image(self, index):
         img = numpy.array(self.dataset[str(index) + '.jpg'])
-        img = crop_center(img)
+        img = crop_center(img, 128, 128)
         plt.imshow(img, interpolation='nearest')
 
 
@@ -109,6 +109,13 @@ def generate_random_image(size):
 def generate_random_seed(size):
     random_data = torch.randn(size)
     return random_data
+
+
+def generate_random_one_hot(size):
+    label_tensor = torch.zeros((size))
+    random_idx = random.randint(0, size - 1)
+    label_tensor[random_idx] = 1.0
+    return label_tensor
 
 
 def crop_center(img, new_width, new_height):
